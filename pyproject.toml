@@ -1,0 +1,29 @@
+[project]
+name = "signzy-distributed-tracing-utils"
+version = "0.0.1"
+description = "Distributed tracing utils for python"
+authors = [
+    {name = "Himanshu Barak", email = "himanshu.barak@signzy.com"},
+]
+dependencies = [
+    "opentelemetry-api>=1.23.0",
+    "opentelemetry-sdk>=1.23.0",
+    "opentelemetry-instrumentation-fastapi>=0.44b0",
+    "opentelemetry-instrumentation-pymongo>=0.44b0",
+    "opentelemetry-instrumentation-redis>=0.44b0",
+    "opentelemetry-exporter-otlp>=1.23.0",
+    "opentelemetry-instrumentation-requests>=0.44b0",
+    "redis>=5.0.3",
+    "pymongo>=4.6.3",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
