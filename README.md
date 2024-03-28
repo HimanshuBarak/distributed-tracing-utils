@@ -20,10 +20,11 @@ pip install  /path/to/your/clonedrepo
 
 ### Set the environment varaibles in you FastAPI app
 
+```
 export SIGNZY_TRACE_SERVICE_NAME=demo-service
 export SIGNZY_TRACING_ENDPOINT=http://localhost:4317/api/traces
 export SIGNZY_ENABLE_TRACING=true
-
+```
 ### Applying AutoInstrumentation for your app
 
 ```
@@ -38,7 +39,6 @@ instrument(app)
 ```
 from signzy_distributed_tracing_utils import instrument_with_tracing
 
-
 @instrument_with_tracing()
 def dummy_function():
     # your function logic
@@ -51,7 +51,6 @@ def dummy_function():
 ```
 from signzy_distributed_tracing_utils import instrument_with_tracing
 
-
 @instrument_with_tracing(span_attrs={"endpoint": "https://api.sampleapis.com/coffee/hot", "method": "GET"})
 def dummy_function():
     # your function logic
@@ -62,7 +61,6 @@ def dummy_function():
 ```
 from signzy_distributed_tracing_utils import instrument_with_tracing
 
-
 @instrument_with_tracing(operation_name="my_function)
 def dummy_function():
     # your function logic
@@ -72,10 +70,10 @@ def dummy_function():
 
 ## Todo:
 
-Logger
-Automatic env varaible for tracing endpoint based on instrumentation
-Instrumentation for Triton
-Intrumentation for Postgre
-Instrumentation for Falcon
-Multiprocessing 
-Message Queues
+1. Logger
+2. Automatic env varaible for tracing endpoint based on instrumentation
+3. Instrumentation for Triton
+4. Intrumentation for Postgre
+5. Instrumentation for Falcon
+6. Multiprocessing 
+7. Message Queues
