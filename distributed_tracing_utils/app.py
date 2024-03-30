@@ -8,32 +8,76 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.instrumentation.pymongo import PymongoInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from distributed_tracing_utils.constants.common import FALCON, FASTAPI, FLASK
 from opentelemetry.trace import Status, StatusCode
-from signzy_distributed_tracing_utils.config.TraceConfig import TraceConfig
+from distributed_tracing_utils.config.TraceConfig import TraceConfig
+
+
+class InstrumentorInterface:
+    def instrument_framework(self, app):
+        raise NotImplementedError
+    
+
+class FastAPIInstrumentor(InstrumentorInterface):
+    def instrument_framework(self, app):
+        from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+        FastAPIInstrumentor.instrument_app(app)
+
+class FlaskInstrumentor(InstrumentorInterface):
+    def instrument_framework(self, app):
+        from opentelemetry.instrumentation.flask import FlaskInstrumentor
+        FlaskInstrumentor().instrument_app(app)
+
+class FalconInstrumentor(InstrumentorInterface):
+    def instrument_framework(self, app):
+        from opentelemetry.instrumentation.falcon import FalconInstrumentor
+        FalconInstrumentor().instrument()        
+
+
+def initialize_instrumentor(framework, app):
+    instrumentor = None
+    if framework == FASTAPI:
+        instrumentor = FastAPIInstrumentor()
+    elif framework == FLASK:
+        instrumentor = FlaskInstrumentor()
+    elif framework == FALCON:
+        instrumentor = FalconInstrumentor()
+    else:
+        raise ValueError(f"Unsupported framework {framework}")
+
+    if instrumentor:
+        instrumentor.instrument_framework(app)
 
 
 # Initialize tracing function
-def instrument(app):
+def instrument(app=None, framework=FASTAPI):
+    """
+       Main action that enables auto instrumentation
+       params : 
+       app : the instance of the fastapi, flask ,falcon application
+       framework: the name of the framework which needs to be instrumented 
+    """
     config = TraceConfig()
     if not config.enable_tracing:
         print("Tracing is disabled.")
         return
-    
+
     if not config.tracing_endpoint:
         raise Exception("Tracing endpoint not provided.")
 
     if not config.trace_service_name:
         raise Exception("Trace service name not provided.")
 
-    # Set up the tracer provider and processor
-    trace.set_tracer_provider(TracerProvider(resource=Resource.create(
-        attributes={"service.name": config.trace_service_name})))
-    trace.get_tracer_provider().add_span_processor(
-        BatchSpanProcessor(OTLPSpanExporter(endpoint=config.tracing_endpoint))
-    )
-    # Instrumentations
-    FastAPIInstrumentor.instrument_app(app)
+  
+    provider = TracerProvider(resource=Resource.create(attributes={
+        "service.name": config.trace_service_name
+    }))
+    # span processor
+    processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=config.tracing_endpoint))
+    provider.add_span_processor(processor)
+    trace.set_tracer_provider(provider)
+    
+    initialize_instrumentor(framework, app)
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     PymongoInstrumentor().instrument()
@@ -41,8 +85,15 @@ def instrument(app):
 
 
 
-# Function level decorator for tracing
+
+
 def instrument_with_tracing(operation_name=None, span_attrs=None):
+    """
+    decorator for applying instrumentation on function (supports both async and sync functions)
+    params:
+    operation_name(optional) : name you want to give to the function(if not provided default function name will be used)
+    span_attrs(optional) : custom attributes you want to give to the function
+    """
     def decorator(func):
         if asyncio.iscoroutinefunction(func):
             @wraps(func)
@@ -75,6 +126,7 @@ def instrument_with_tracing(operation_name=None, span_attrs=None):
                         raise
             return sync_wrapper
     return decorator
+
 
 
 

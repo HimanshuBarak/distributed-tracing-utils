@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:2f61a83ce213d4da7ea3a15877919c3f25862b986029d500557872697e8f3083"
+content_hash = "sha256:1073530fe0994a7ccc162df6387c9e06e39c57570db3781d14b945d7e1877c63"
 
 [[package]]
 name = "asgiref"
@@ -320,6 +320,42 @@ files = [
 ]
 
 [[package]]
+name = "opentelemetry-instrumentation-dbapi"
+version = "0.44b0"
+requires_python = ">=3.8"
+summary = "OpenTelemetry Database API instrumentation"
+groups = ["default"]
+dependencies = [
+    "opentelemetry-api~=1.12",
+    "opentelemetry-instrumentation==0.44b0",
+    "opentelemetry-semantic-conventions==0.44b0",
+    "wrapt<2.0.0,>=1.0.0",
+]
+files = [
+    {file = "opentelemetry_instrumentation_dbapi-0.44b0-py3-none-any.whl", hash = "sha256:36333c7b2bbc6df660f5de965e0c0e8b02885c5b36016ec6386e6bba41c71280"},
+    {file = "opentelemetry_instrumentation_dbapi-0.44b0.tar.gz", hash = "sha256:8cbec84d01e7a7eabf2518186e74e6b95a25ec190ad834df409048dc8e0dbf86"},
+]
+
+[[package]]
+name = "opentelemetry-instrumentation-falcon"
+version = "0.44b0"
+requires_python = ">=3.8"
+summary = "Falcon instrumentation for OpenTelemetry"
+groups = ["default"]
+dependencies = [
+    "opentelemetry-api~=1.12",
+    "opentelemetry-instrumentation-wsgi==0.44b0",
+    "opentelemetry-instrumentation==0.44b0",
+    "opentelemetry-semantic-conventions==0.44b0",
+    "opentelemetry-util-http==0.44b0",
+    "packaging>=20.0",
+]
+files = [
+    {file = "opentelemetry_instrumentation_falcon-0.44b0-py3-none-any.whl", hash = "sha256:8965c4b134f7f23f0931c12ac7b267cf7a13ca565d69b182c43d30beddab6601"},
+    {file = "opentelemetry_instrumentation_falcon-0.44b0.tar.gz", hash = "sha256:821e95697e8a1adbdf92b41410c2b72750cdaf64fbcef573fdc3a260c93e3525"},
+]
+
+[[package]]
 name = "opentelemetry-instrumentation-fastapi"
 version = "0.44b0"
 requires_python = ">=3.8"
@@ -335,6 +371,41 @@ dependencies = [
 files = [
     {file = "opentelemetry_instrumentation_fastapi-0.44b0-py3-none-any.whl", hash = "sha256:4441482944bea6676816668d56deb94af990e8c6e9582c581047e5d84c91d3c9"},
     {file = "opentelemetry_instrumentation_fastapi-0.44b0.tar.gz", hash = "sha256:67ed10b93ad9d35238ae0be73cf8acbbb65a4a61fb7444d0aee5b0c492e294db"},
+]
+
+[[package]]
+name = "opentelemetry-instrumentation-flask"
+version = "0.44b0"
+requires_python = ">=3.8"
+summary = "Flask instrumentation for OpenTelemetry"
+groups = ["default"]
+dependencies = [
+    "opentelemetry-api~=1.12",
+    "opentelemetry-instrumentation-wsgi==0.44b0",
+    "opentelemetry-instrumentation==0.44b0",
+    "opentelemetry-semantic-conventions==0.44b0",
+    "opentelemetry-util-http==0.44b0",
+    "packaging>=21.0",
+]
+files = [
+    {file = "opentelemetry_instrumentation_flask-0.44b0-py3-none-any.whl", hash = "sha256:01c99415e199bb68abd21b03ffe9d2ee1cb359c269f81c2d1d9aaba260cefe91"},
+    {file = "opentelemetry_instrumentation_flask-0.44b0.tar.gz", hash = "sha256:8edd3caba8c9c850578ac69a53ed1d3e0cb9d0a150ba4001edfd353f3a3ec9a4"},
+]
+
+[[package]]
+name = "opentelemetry-instrumentation-psycopg2"
+version = "0.44b0"
+requires_python = ">=3.8"
+summary = "OpenTelemetry psycopg2 instrumentation"
+groups = ["default"]
+dependencies = [
+    "opentelemetry-api~=1.12",
+    "opentelemetry-instrumentation-dbapi==0.44b0",
+    "opentelemetry-instrumentation==0.44b0",
+]
+files = [
+    {file = "opentelemetry_instrumentation_psycopg2-0.44b0-py3-none-any.whl", hash = "sha256:2b3bff537c352304a3b2e6844b8f4f9d76e97de8a046db5a7df52e2dd896c738"},
+    {file = "opentelemetry_instrumentation_psycopg2-0.44b0.tar.gz", hash = "sha256:a2ea1857235ba5d76f9b842843c0000f06ef780559bf4a358c498cbaeeed62c5"},
 ]
 
 [[package]]
@@ -388,6 +459,23 @@ files = [
 ]
 
 [[package]]
+name = "opentelemetry-instrumentation-wsgi"
+version = "0.44b0"
+requires_python = ">=3.8"
+summary = "WSGI Middleware for OpenTelemetry"
+groups = ["default"]
+dependencies = [
+    "opentelemetry-api~=1.12",
+    "opentelemetry-instrumentation==0.44b0",
+    "opentelemetry-semantic-conventions==0.44b0",
+    "opentelemetry-util-http==0.44b0",
+]
+files = [
+    {file = "opentelemetry_instrumentation_wsgi-0.44b0-py3-none-any.whl", hash = "sha256:8d2adc1183ccd17f1329db39b15c1cb759095da10ac1de70c64a653c0acdc9af"},
+    {file = "opentelemetry_instrumentation_wsgi-0.44b0.tar.gz", hash = "sha256:b0fe5568de3847f1eb851a4cd2e226ac0a2f6c4d93c7a94766754c4673e8b758"},
+]
+
+[[package]]
 name = "opentelemetry-proto"
 version = "1.23.0"
 requires_python = ">=3.8"
@@ -437,6 +525,17 @@ groups = ["default"]
 files = [
     {file = "opentelemetry_util_http-0.44b0-py3-none-any.whl", hash = "sha256:ff018ab6a2fa349537ff21adcef99a294248b599be53843c44f367aef6bccea5"},
     {file = "opentelemetry_util_http-0.44b0.tar.gz", hash = "sha256:75896dffcbbeb5df5429ad4526e22307fc041a27114e0c5bfd90bb219381e68f"},
+]
+
+[[package]]
+name = "packaging"
+version = "24.0"
+requires_python = ">=3.7"
+summary = "Core utilities for Python packages"
+groups = ["default"]
+files = [
+    {file = "packaging-24.0-py3-none-any.whl", hash = "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5"},
+    {file = "packaging-24.0.tar.gz", hash = "sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"},
 ]
 
 [[package]]
